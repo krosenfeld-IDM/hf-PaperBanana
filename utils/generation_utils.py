@@ -770,15 +770,15 @@ async def call_model_with_retry_async(
     else:
         # Auto-detect provider based on which API key is configured
         actual_model = model_name
-        if openrouter_client is not None:
-            provider = "openrouter"
-            actual_model = _to_openrouter_model_id(model_name)
+        if openai_client is not None:
+            provider = "openai"
         elif gemini_client is not None:
             provider = "gemini"
         elif anthropic_client is not None:
             provider = "anthropic"
-        elif openai_client is not None:
-            provider = "openai"
+        elif openrouter_client is not None:
+            provider = "openrouter"
+            actual_model = _to_openrouter_model_id(model_name)
         else:
             raise RuntimeError(
                 "No API client available. Please configure at least one API key "

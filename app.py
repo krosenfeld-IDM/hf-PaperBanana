@@ -445,7 +445,7 @@ CUSTOM_CSS = """
 def build_app():
 
     default_main_model = get_config_val("defaults", "main_model_name", "MAIN_MODEL_NAME", "gpt-5.4-2026-03-05")
-    default_image_model = get_config_val("defaults", "image_gen_model_name", "IMAGE_GEN_MODEL_NAME", "gpt-image-1.5-2025-12-16")
+    default_image_model = get_config_val("defaults", "image_gen_model_name", "IMAGE_GEN_MODEL_NAME", "gpt-image-1.5")
 
     with gr.Blocks(title="PaperBanana") as app:
         # ---- State to hold results across interactions ----

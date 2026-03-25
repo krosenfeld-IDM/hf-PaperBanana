@@ -24,7 +24,9 @@ A reference-driven agentic framework that transforms raw scientific content into
 
 ## Usage
 
-1. Enter your **API key** (OpenRouter or Google Gemini — only one needed)
+1. Enter your **API key** (Openai needed, Anthropic optional)
 2. Paste your method text and figure caption (or use the built-in example)
 3. Click **Generate Candidates** and wait ~10 minutes
 4. Optionally refine any candidate in the **Refine Image** tab
+
+Github: https://github.com/krosenfeld-IDM/hf-PaperBanana

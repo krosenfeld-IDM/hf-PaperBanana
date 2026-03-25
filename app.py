@@ -490,30 +490,36 @@ def build_app():
         # ================================================================
         with gr.Accordion("API Keys", open=False):
             gr.Markdown(
-                "Enter your **OpenAI** API key below. "
-                "The key is used only for this session and never stored."
+                "Enter your **OpenAI** and/or **Anthropic** API keys below. "
+                "Keys are used only for this session and never stored."
             )
             with gr.Row():
                 openai_key_input = gr.Textbox(
                     label="OpenAI API Key", type="password", placeholder="sk-...",
                     value=get_config_val("api_keys", "openai_api_key", "OPENAI_API_KEY", ""),
                 )
+                anthropic_key_input = gr.Textbox(
+                    label="Anthropic API Key", type="password", placeholder="sk-ant-...",
+                    value=get_config_val("api_keys", "anthropic_api_key", "ANTHROPIC_API_KEY", ""),
+                )
 
-            def apply_keys(oai_key):
+            def apply_keys(oai_key, ant_key):
                 if oai_key:
                     os.environ["OPENAI_API_KEY"] = oai_key
+                if ant_key:
+                    os.environ["ANTHROPIC_API_KEY"] = ant_key
                 from utils.generation_utils import reinitialize_clients
                 initialized = reinitialize_clients()
                 if initialized:
                     return f"Clients initialized: {', '.join(initialized)}."
                 return (
                     "Warning: no API clients could be initialized. "
-                    "Please enter a valid OpenAI API key."
+                    "Please enter a valid API key."
                 )
 
             apply_keys_btn = gr.Button("Apply Keys", size="sm")
             keys_status = gr.Textbox(visible=False)
-            apply_keys_btn.click(apply_keys, inputs=[openai_key_input], outputs=[keys_status])
+            apply_keys_btn.click(apply_keys, inputs=[openai_key_input, anthropic_key_input], outputs=[keys_status])
 
         # ================================================================
         # TABS
@@ -570,10 +576,12 @@ def build_app():
                             minimum=1, maximum=5, value=3, step=1,
                             label="Max Critic Rounds",
                         )
-                        main_model_name = gr.Textbox(
+                        main_model_name = gr.Dropdown(
+                            choices=[default_main_model, "claude-opus-4-6"],
+                            value=default_main_model,
+                            allow_custom_value=True,
                             label="Model Name",
                             info="Model name to use for reasoning",
-                            value=default_main_model,
                         )
                         image_model_name = gr.Textbox(
                             label="Image Generation Model",

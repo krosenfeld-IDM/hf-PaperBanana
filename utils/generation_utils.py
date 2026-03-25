@@ -796,11 +796,13 @@ async def call_model_with_retry_async(
         )
 
     # Convert Gemini GenerateContentConfig -> dict for OpenAI/Claude/OpenRouter
+    _max_tokens = config.max_output_tokens if hasattr(config, "max_output_tokens") else 50000
     cfg_dict = {
         "system_prompt": config.system_instruction if hasattr(config, "system_instruction") else "",
         "temperature": config.temperature if hasattr(config, "temperature") else 1.0,
         "candidate_num": config.candidate_count if hasattr(config, "candidate_count") else 1,
-        "max_completion_tokens": config.max_output_tokens if hasattr(config, "max_output_tokens") else 50000,
+        "max_output_tokens": _max_tokens,
+        "max_completion_tokens": _max_tokens,
     }
 
     call_fn = {
